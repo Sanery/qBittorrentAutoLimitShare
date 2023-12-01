@@ -288,6 +288,16 @@ func (t *Torrents) SetShareLimits(hashes []string, req torrents.ApiTorrentSetSha
 	return nil, status
 }
 
+// SetShareLimits  设置种子分享限制
+func (t *Torrents) SetShareLimitsV2(hashes []string, req torrents.ApiTorrentSetShareLimitsReqV2) (error, int) {
+	req.Hashes = t.client.GenHashs(hashes)
+	res, status := t.client.Post("api/v2/torrents/setShareLimits", req)
+	if status != 200 {
+		return errors.New(res), status
+	}
+	return nil, status
+}
+
 func (t *Torrents) UploadLimit(req torrents.ApiTorrentUploadLimitReq) (error, *torrents.ApiTorrentUploadLimitRes) {
 	res, status := t.client.Post("torrents/uploadLimit", req)
 	if status != 200 {

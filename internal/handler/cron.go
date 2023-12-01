@@ -4,12 +4,13 @@ import (
 	"QbittorrentAutoLimitShare/internal/consts"
 	"QbittorrentAutoLimitShare/internal/model/qbit/torrents"
 	"QbittorrentAutoLimitShare/internal/service"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 var HandleCron = &handleCron{}
@@ -141,9 +142,10 @@ func (this *handleCron) Run() {
 						log.Println(s.Torrents[v2].Name)
 					}
 					// 通知设置分享率
-					err, _ := service.ServiceCron.GetTorrents().SetShareLimits(v, torrents.ApiTorrentSetShareLimitsReq{
-						SeedingTimeLimit: SeedingTimeLimit,
-						RatioLimit:       RatioLimit,
+					err, _ := service.ServiceCron.GetTorrents().SetShareLimitsV2(v, torrents.ApiTorrentSetShareLimitsReqV2{
+						SeedingTimeLimit:         SeedingTimeLimit,
+						RatioLimit:               RatioLimit,
+						InactiveSeedingTimeLimit: -1,
 					})
 					if err != nil {
 						log.Println("设置分享率失败", err.Error())
@@ -168,7 +170,7 @@ func (this *handleCron) Run() {
 	}
 }
 
-//checkScanTime 检查扫描时间间隔
+// checkScanTime 检查扫描时间间隔
 func (this *handleCron) checkScanTime(setLimitCount int) {
 	limitTime := this.conf.GetDuration("qbit_scan_time")
 	if limitTime == 0 {
