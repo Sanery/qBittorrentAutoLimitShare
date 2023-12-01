@@ -69,7 +69,7 @@ func (this *handleCron) Run() {
 			trustTrackersArr := strings.Split(trustTrackers, " ")
 
 			// 获取种子监控最长时间
-			skillMaxCompleteTime := 24 * 60 * 60 * this.conf.GetInt("qbit_skill_max_complete_time")
+			skillMaxCompleteTime := 24 * 60 * 60 * this.conf.GetInt("qbit_skip_max_complete_time")
 			// 获取种子检测时间类型
 			checkTimeType := this.conf.GetInt("qbit_check_time_type")
 			if checkTimeType == 0 {
