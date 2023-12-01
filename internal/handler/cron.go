@@ -79,6 +79,12 @@ func (this *handleCron) Run() {
 			// 获取配置的上传限制
 			SeedingTimeLimit := this.conf.GetInt("qbit_upload_time") // 上传时间
 			RatioLimit := this.conf.GetFloat64("qbit_upload_radio")  // 分享率
+			InactiveSeedingTimeLimit := -1                           // 不活跃时间
+			if this.conf.Get("qbit_upload_inactive_time") == nil {
+				InactiveSeedingTimeLimit = -1
+			} else {
+				InactiveSeedingTimeLimit = this.conf.GetInt("qbit_upload_inactive_time") // 不活跃时间
+			}
 
 			// 获取种子列表
 			err, s := service.ServiceCron.GetSync().Maindata()
@@ -142,10 +148,10 @@ func (this *handleCron) Run() {
 						log.Println(s.Torrents[v2].Name)
 					}
 					// 通知设置分享率
-					err, _ := service.ServiceCron.GetTorrents().SetShareLimitsV2(v, torrents.ApiTorrentSetShareLimitsReqV2{
+					err, _ := service.ServiceCron.GetTorrents().SetShareLimits(v, torrents.ApiTorrentSetShareLimitsReq{
 						SeedingTimeLimit:         SeedingTimeLimit,
 						RatioLimit:               RatioLimit,
-						InactiveSeedingTimeLimit: -1,
+						InactiveSeedingTimeLimit: InactiveSeedingTimeLimit,
 					})
 					if err != nil {
 						log.Println("设置分享率失败", err.Error())

@@ -259,13 +259,6 @@ type ApiTorrentSetShareLimitsReq struct {
 	Hashes           string  `json:"hashes,omitempty"`
 	SeedingTimeLimit int     `json:"seedingTimeLimit,omitempty"`
 	RatioLimit       float64 `json:"ratioLimit,omitempty"`
-}
-
-//////////////////////////////
-type ApiTorrentSetShareLimitsReqV2 struct {
-	Hashes           string  `json:"hashes,omitempty"`
-	SeedingTimeLimit int     `json:"seedingTimeLimit,omitempty"`
-	RatioLimit       float64 `json:"ratioLimit,omitempty"`
 	InactiveSeedingTimeLimit int `json:"inactiveSeedingTimeLimit,omitempty"`
 }
 
